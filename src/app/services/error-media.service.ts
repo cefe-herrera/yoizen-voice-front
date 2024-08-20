@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ErrorsConstants } from '../components/error.constants';
+import { ErrorsConstants } from '../constants/error.constants';
 
 @Injectable({
   providedIn: 'root'
