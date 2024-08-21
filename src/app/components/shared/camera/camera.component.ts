@@ -19,6 +19,7 @@ export class CameraComponent {
   private videoStream: MediaStream | null = null;
   public mediaDevices: MediaDeviceInfo[] = [];
 
+  imageUser = "assets/user-profile.png"
 
 
   constructor(
@@ -30,6 +31,7 @@ export class CameraComponent {
 
   ngAfterViewInit(): void {
     this.listMediaDevices();
+    this.initCanvas()
   }
 
   ngOnInit(): void {
@@ -79,7 +81,7 @@ export class CameraComponent {
 
       this.videoElement.nativeElement.srcObject = null;
       this.videoStream = null;
-
+      this.initCanvas();
     }
     else {
       console.error('No webcam stream to stop.');
@@ -95,6 +97,32 @@ export class CameraComponent {
       .catch(err => console.error('Error al listar dispositivos de medios:', err));
   }
 
+
+  initCanvas() {
+    const canvas = this.videoCanvas.nativeElement;
+    const context = canvas.getContext('2d');
+  
+    if (context) {
+      const image = new Image();
+      image.src = this.imageUser; // Ruta a tu imagen en los assets
+      
+      image.onload = () => {
+        // Centrar la imagen en el canvas
+        context.fillStyle = '#2C3E50'; // Cambia el color de fondo aquí
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Centrar la imagen en el canvas
+        const imgWidth = canvas.width / 4; // Ajusta el tamaño de la imagen
+        const imgHeight = imgWidth; // Mantén la proporción
+        const x = (canvas.width - imgWidth) / 2;
+        const y = (canvas.height - imgHeight) / 2;
+
+        context.drawImage(image, x, y, imgWidth, imgHeight);
+
+      };
+    }
+  }
+  
 
   updateCanvas() {
     const video = this.videoElement.nativeElement;
